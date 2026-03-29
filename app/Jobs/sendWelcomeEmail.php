@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class SendWelcomeEmail implements ShouldQueue
 {
-    use Dispatchable, Queueable, SerializesModels, InteractsWithQueue; 
+    use Dispatchable, Queueable, SerializesModels, InteractsWithQueue;
 
     public $user;
 
@@ -50,15 +50,15 @@ class SendWelcomeEmail implements ShouldQueue
     {
 
 
-    try {
-  
-        Mail::to($this->user->email)
-            ->send(new WelcomeMail($this->user));
-    } catch (\Exception $e) {
-        Log::error('SendWelcomeEmail failed: ' . $e->getMessage());
+        try {
 
-        $this->release(5);
-    }
+            Mail::to($this->user->email)
+                ->send(new WelcomeMail($this->user));
+        } catch (\Exception $e) {
+            Log::error('SendWelcomeEmail failed: ' . $e->getMessage());
+
+            $this->release(5);
+        }
     }
 
     public function failed(\Throwable $exception): void

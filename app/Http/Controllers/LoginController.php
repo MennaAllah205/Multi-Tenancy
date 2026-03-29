@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class Logincontroller extends Controller
+class LoginController extends Controller
 {
     public function login(Request $request)
     {

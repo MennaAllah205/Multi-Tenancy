@@ -8,17 +8,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory,Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+
+
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => ucfirst($value),
+            set: fn($value) => $value . ' - updated',
+        );
+    }
     protected $fillable = [
         'name',
         'email',
@@ -47,5 +58,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // self::observe(UserObserver::class);
     }
 }
